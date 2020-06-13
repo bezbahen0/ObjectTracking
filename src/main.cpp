@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 
-#include "include/cammera.hpp"
+#include "include/ObjectTracking.hpp"
 
 inline cv::Ptr<cv::Tracker> cvTrackers(cv::String name)
 {
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
     }
     if(parser.has("camera"))
     {
-        CaptureImageCamera cap(tracker, parser.get<int>("camera"));
+        ObjectTracking cap(tracker, parser.get<int>("camera"));
         cap.run();
     }
     if(parser.has("display"))

@@ -1,18 +1,21 @@
-#include "include/cammera.hpp"
+#include "include/ObjectTracking.hpp"
+#include "include/ImageGrab.hpp"
 
 #include <opencv2/videoio.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/highgui.hpp>
 
-CaptureImageCamera::CaptureImageCamera(cv::Ptr<cv::Tracker> tracker, int cameraNum)
+#include <iostream>
+
+ObjectTracking::ObjectTracking(cv::Ptr<cv::Tracker> tracker, int cameraNum)
 {
     tracker_ = tracker;
     cameraNum_ = cameraNum;
 }
 
-void CaptureImageCamera::run()
+void ObjectTracking::run()
 {
-    cv::VideoCapture cap;
+    ImageGrab cap;
     cap.open(cameraNum_);
 
     cv::Mat frame;
@@ -20,7 +23,7 @@ void CaptureImageCamera::run()
 
     std::cout << "[INFO] Start stream" << std::endl;
     
-    auto temp = tracker_;
+    //cv::Ptr<cv::Tracker> temp = cv::Ptr<cv::Tracker>(*tracker_);
 
     bool init = false;
     while(true)
