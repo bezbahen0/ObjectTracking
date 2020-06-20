@@ -3,6 +3,8 @@
 
 #include <opencv2/videoio.hpp>
 
+#include "include/DisplayCapture.hpp"
+
 class ImageGrab : public cv::VideoCapture
 {
 public:
@@ -12,12 +14,10 @@ public:
     ImageGrab(int index);
     ImageGrab(int index, int apiPreference);
 
-    /*constructors for grab image display*/
     virtual ~ImageGrab();
 
-//    bool open();
-protected:
-
+    bool opendisplay(int index);
+    cv::Ptr<cv::IVideoCapture> createDisplayCap();
 };
 
 #endif /* IMAGEGRAB_HPP */

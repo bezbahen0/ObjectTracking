@@ -25,7 +25,23 @@ ImageGrab::~ImageGrab()
     icap.release();
 }
 
-/*bool ImageGrab::open()
+bool ImageGrab::opendisplay(int index)
 {
-icap set;
-}*/
+    if(isOpened())
+    {
+        release();
+    }
+    
+    icap = createDisplayCap();
+    if(!icap.empty())
+    {
+        return true;
+    }
+    return false;
+}
+
+cv::Ptr<cv::IVideoCapture> ImageGrab::createDisplayCap()
+{
+    DisplayCapture* cap = new DisplayCapture();
+    return cv::Ptr<cv::IVideoCapture>(cap);
+}

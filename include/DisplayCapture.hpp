@@ -8,6 +8,20 @@
 
 #include <vector>
 
+namespace cv
+{
+class IVideoCapture
+{
+public:
+    virtual ~IVideoCapture() {}
+    virtual double getProperty(int) const { return 0; }
+    virtual bool setProperty(int, double) { return false; }
+    virtual bool grabFrame() = 0;
+    virtual bool retrieveFrame(int, OutputArray) = 0;
+    virtual bool isOpened() const = 0;
+    virtual int getCaptureDomain() { return CAP_ANY; } // Return the type of the capture object: CAP_DSHOW, etc...
+};
+}
 class DisplayCapture : public cv::IVideoCapture
 {
 public:
