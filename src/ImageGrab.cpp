@@ -24,7 +24,7 @@ ImageGrab::~ImageGrab()
 {
 }
 
-bool ImageGrab::open()
+/*bool ImageGrab::open()
 {
-
-}
+icap set;
+}*/
