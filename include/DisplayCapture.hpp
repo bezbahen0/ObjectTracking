@@ -26,7 +26,7 @@ class DisplayCapture : public cv::IVideoCapture
 {
 public:
     
-    DisplayCapture();
+    DisplayCapture(int screenNumber);
     virtual ~DisplayCapture();
     
     virtual bool grabFrame() CV_OVERRIDE;

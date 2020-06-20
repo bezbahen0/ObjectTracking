@@ -32,7 +32,7 @@ bool ImageGrab::opendisplay(int index)
         release();
     }
     
-    icap = createDisplayCap();
+    icap = createDisplayCap(index);
     if(!icap.empty())
     {
         return true;
@@ -40,8 +40,8 @@ bool ImageGrab::opendisplay(int index)
     return false;
 }
 
-cv::Ptr<cv::IVideoCapture> ImageGrab::createDisplayCap()
+cv::Ptr<cv::IVideoCapture> ImageGrab::createDisplayCap(int index)
 {
-    DisplayCapture* cap = new DisplayCapture();
+    DisplayCapture* cap = new DisplayCapture(index);
     return cv::Ptr<cv::IVideoCapture>(cap);
 }

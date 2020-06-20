@@ -1,9 +1,10 @@
 #include "include/DisplayCapture.hpp"
 
+#include <opencv2/imgproc.hpp>
 
-DisplayCapture::DisplayCapture()
+DisplayCapture::DisplayCapture(int screenNumber)
 {
-    screenNumber_ = 0;
+    screenNumber_ = screenNumber;
     display_ = XOpenDisplay(nullptr);
     root_ = RootWindow(display_, screenNumber_);
 }
@@ -40,6 +41,7 @@ bool DisplayCapture::retrieveFrame(int, cv::OutputArray dst)
         memcpy(&pixels_[0], img -> data, pixels_.size());
 
         cv::Mat mat = cv::Mat(height_, width_, BitsPerPixel_ > 24 ? CV_8UC4 : CV_8UC3, &pixels_[0]);
+        cv::cvtColor(mat, mat, cv::COLOR_BGRA2BGR);
         mat.copyTo(dst);
 
         XDestroyImage(img);
