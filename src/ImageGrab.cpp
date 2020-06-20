@@ -22,6 +22,7 @@ ImageGrab::ImageGrab(int index, int apiPreference) : cv::VideoCapture(index, api
 
 ImageGrab::~ImageGrab()
 {
+    icap.release();
 }
 
 /*bool ImageGrab::open()
