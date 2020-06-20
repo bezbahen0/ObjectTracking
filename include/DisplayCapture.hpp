@@ -1,20 +1,33 @@
 #ifndef DISPLAYCAPTURE_HPP
 #define DISPLAYCAPTURE_HPP
 
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+
 #include <opencv2/videoio.hpp>
+
+#include <vector>
 
 class DisplayCapture : public cv::IVideoCapture
 {
 public:
-
-    //virtual double getProperty(int propId) const CV_OVERRIDE;//{ return 0; }
-    //virtual bool setProperty(int propId, double value) CV_OVERRIDE;//{ return false; }
+    
+    DisplayCapture();
+    virtual ~DisplayCapture();
+    
     virtual bool grabFrame() CV_OVERRIDE;
     virtual bool retrieveFrame(int, cv::OutputArray dst) CV_OVERRIDE;
     virtual bool isOpened() const CV_OVERRIDE;
-    //virtual int getCaptureDomain() 
-private:
 
+private:
+    Display* display_;
+    Window root_;
+    int screenNumber_;
+
+    int width_; 
+    int height_;
+    int BitsPerPixel_;
+    std::vector<uint8_t> pixels_;
 };
 
 #endif /* DISPLAYCAPTURE_HPP */

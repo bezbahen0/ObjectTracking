@@ -3,13 +3,6 @@
 
 #include <opencv2/videoio.hpp>
 
-enum TypesCapture
-{
-    CAP_CAMERA = 0,
-    CAP_FILE = 1,
-    CAP_DISPLAY = 2
-};
-
 class ImageGrab : public cv::VideoCapture
 {
 public:
