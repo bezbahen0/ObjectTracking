@@ -25,6 +25,7 @@ public:
 private:
     cv::String trackerName_;
     cv::Ptr<cv::Tracker> tracker_;
+    cv::Mat mask_;
     ImageGrab cap_;
 };
 

@@ -94,11 +94,11 @@ void ObjectTracking::run()
             {
                 init = true;
             }
-
         }
         if((int) c == 27)
         {
             init = false;
+            drawingWay = false;
 
             cap_ >> frame;
 
@@ -110,4 +110,3 @@ void ObjectTracking::run()
         }
     }
 }
-
