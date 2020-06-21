@@ -1,25 +1,21 @@
 #include "include/ObjectTracking.hpp"
 
-static void help(char* argv[])
-{
-    std::cout << "help me please" << std::endl; 
-}
+cv::String keys =
+        "{ help h    || help }"
+        "{ video   v || tracking objects on video }"
+        "{ camera  c || tracking objects on camera or webcam }"
+        "{ display d || tracking objects on display }"
+        "{ tracker t |kcf| tracker type }";
 
 int main(int argc, char* argv[])
 {
-    cv::CommandLineParser parser(argc, argv,
-        "{help h    |         | help                                }"
-        "{video   v |         | tracking objects on video           }"
-        "{camera  c |         | tracking objects on camera or webcam}"
-        "{display d |         | tracking objects on display         }"
-        "{tracker t |   kcf   | tracker type                        }"
-    );
+    cv::CommandLineParser parser(argc, argv, keys);
     
     cv::String tracker = parser.get<cv::String>("tracker"); 
     
-    if(parser.has("help"))
+    if(parser.has("help") || argc == 1)
     {
-        help(argv);
+        parser.printMessage();
         return EXIT_SUCCESS;
     }
     if(parser.has("video"))
