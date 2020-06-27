@@ -1,4 +1,5 @@
 #include "include/ObjectTracking.hpp"
+#include "include/TrackerMyImpl.hpp"
 
 inline cv::Ptr<cv::Tracker> cvtrackers(cv::String name)
 {
@@ -18,6 +19,8 @@ inline cv::Ptr<cv::Tracker> cvtrackers(cv::String name)
         tracker = cv::TrackerMOSSE::create();
     else if (name == "csrt")
         tracker = cv::TrackerCSRT::create();
+    else if (name == "myimpl")
+        tracker = TrackerMyImpl::create();
     else
         CV_Error(cv::Error::StsBadArg, "invalid tracking algorithm name\n");
 
@@ -30,13 +33,21 @@ ObjectTracking::ObjectTracking(cv::String& trackerName, int index, int typeCap)
     tracker_ = ::cvtrackers(trackerName);
     if(typeCap == TypeCapture::DISPLAY_CAP)
     {
-        std::cout << cap_.opendisplay(index) << std::endl;
+        cap_.opendisplay(index);
     }
     else
     {
         cap_.open(index);
     }
 }
+
+ObjectTracking::ObjectTracking(cv::String& trackerName, int index, char* addressDisplay)
+{
+    trackerName_ = trackerName;
+    tracker_ = ::cvtrackers(trackerName);
+    cap_.opendisplay(index, addressDisplay);
+}
+
 ObjectTracking::ObjectTracking(cv::String& trackerName, cv::String filename)
 {
     trackerName_ = trackerName;
@@ -98,7 +109,6 @@ void ObjectTracking::run()
         if((int) c == 27)
         {
             init = false;
-            drawingWay = false;
 
             cap_ >> frame;
 

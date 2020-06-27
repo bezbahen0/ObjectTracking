@@ -45,3 +45,24 @@ cv::Ptr<cv::IVideoCapture> ImageGrab::createDisplayCap(int index)
     DisplayCapture* cap = new DisplayCapture(index);
     return cv::Ptr<cv::IVideoCapture>(cap);
 }
+
+bool ImageGrab::opendisplay(int index, char* address)
+{
+    if(isOpened())
+    {
+        release();
+    }
+    
+    icap = createDisplayCap(index, address);
+    if(!icap.empty())
+    {
+        return true;
+    }
+    return false;
+}
+
+cv::Ptr<cv::IVideoCapture> ImageGrab::createDisplayCap(int index, char* address)
+{
+    DisplayCapture* cap = new DisplayCapture(index, address);
+    return cv::Ptr<cv::IVideoCapture>(cap);
+}

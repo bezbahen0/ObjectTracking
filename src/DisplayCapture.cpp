@@ -9,6 +9,13 @@ DisplayCapture::DisplayCapture(int screenNumber)
     root_ = RootWindow(display_, screenNumber_);
 }
 
+DisplayCapture::DisplayCapture(int screenNumber, char* address)
+{
+    screenNumber_ = screenNumber_;
+    display_ = XOpenDisplay(address);
+    root_ = RootWindow(display_, screenNumber_);
+}
+
 DisplayCapture::~DisplayCapture()
 {
    XCloseDisplay(display_); 

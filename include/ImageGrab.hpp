@@ -17,7 +17,9 @@ public:
     virtual ~ImageGrab();
 
     bool opendisplay(int index);
+    bool opendisplay(int index, char* address);
     cv::Ptr<cv::IVideoCapture> createDisplayCap(int index);
+    cv::Ptr<cv::IVideoCapture> createDisplayCap(int index, char* address);
 };
 
 #endif /* IMAGEGRAB_HPP */
