@@ -1,5 +1,5 @@
 #include "include/ObjectTracking.hpp"
-#include "include/TrackerMyImpl.hpp"
+//#include "include/TrackerMyImpl.hpp"
 
 inline cv::Ptr<cv::Tracker> cvtrackers(cv::String name)
 {
@@ -19,8 +19,8 @@ inline cv::Ptr<cv::Tracker> cvtrackers(cv::String name)
         tracker = cv::TrackerMOSSE::create();
     else if (name == "csrt")
         tracker = cv::TrackerCSRT::create();
-    else if (name == "myimpl")
-        tracker = TrackerMyImpl::create();
+   // else if (name == "myimpl")
+   //     tracker = TrackerMyImpl::create();
     else
         CV_Error(cv::Error::StsBadArg, "invalid tracking algorithm name\n");
 
