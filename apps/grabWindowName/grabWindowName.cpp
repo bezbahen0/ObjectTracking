@@ -42,7 +42,6 @@ char* getWindowName(Display* disp, Window win)
 int main()
 {
     unsigned long len;
-    XKeyEvent esend;
     Display* disp = XOpenDisplay(nullptr);
     Window* list;
     char* name;
