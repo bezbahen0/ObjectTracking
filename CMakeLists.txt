@@ -6,7 +6,7 @@ find_package( OpenCV REQUIRED )
 find_package(X11 REQUIRED)
 
 add_compile_options(
-    #-Wall
+    # -Wall
 )
 
 file(GLOB HEADERS "include/*.hpp")
