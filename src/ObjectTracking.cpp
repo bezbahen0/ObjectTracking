@@ -1,7 +1,7 @@
 #include "include/ObjectTracking.hpp"
 //#include "include/TrackerMyImpl.hpp"
 
-inline cv::Ptr<cv::Tracker> cvtrackers(cv::String name)
+inline cv::Ptr<cv::Tracker> cvtrackers(cv::String& name)
 {
     cv::Ptr<cv::Tracker> tracker;
 
@@ -19,13 +19,17 @@ inline cv::Ptr<cv::Tracker> cvtrackers(cv::String name)
         tracker = cv::TrackerMOSSE::create();
     else if (name == "csrt")
         tracker = cv::TrackerCSRT::create();
-   // else if (name == "myimpl")
-   //     tracker = TrackerMyImpl::create();
+    //this tracker use caffemodel, for mor information on gouturn tracker https://www.learnopencv.com/goturn-deep-learning-based-object-tracking/
+    else if (name == "goturn")
+        tracker = cv::TrackerGOTURN::create();
+    // else if (name == "myimpl")
+    //    tracker = TrackerMyImpl::create();
     else
         CV_Error(cv::Error::StsBadArg, "invalid tracking algorithm name\n");
 
     return tracker;
 }
+//inline cv::Ptr<cv::Tracker> cvCnnTrackers(cv::String& name, )
 
 ObjectTracking::ObjectTracking(cv::String& trackerName, int index, int typeCap)
 {
