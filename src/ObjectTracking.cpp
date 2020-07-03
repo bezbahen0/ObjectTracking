@@ -29,7 +29,6 @@ inline cv::Ptr<cv::Tracker> cvtrackers(cv::String& name)
 
     return tracker;
 }
-//inline cv::Ptr<cv::Tracker> cvCnnTrackers(cv::String& name, )
 
 ObjectTracking::ObjectTracking(cv::String& trackerName, int index, int typeCap)
 {

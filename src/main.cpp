@@ -4,7 +4,7 @@ cv::String keys =
         "{ help h    || help }"
         "{ video   v || tracking objects on video }"
         "{ camera  c || tracking objects on camera or webcam }"
-        "{ display d || tracking objects on display }"
+        "{ window  w || tracking objects on display window}"
         "{ tracker t |kcf| tracker type }";
 
 int main(int argc, char* argv[])
@@ -24,9 +24,9 @@ int main(int argc, char* argv[])
         cap.run();
         return EXIT_SUCCESS;
     }
-    if(parser.has("display"))
+    if(parser.has("window"))
     {
-        ObjectTracking cap(tracker, parser.get<int>("display"), TypeCapture::DISPLAY_CAP);
+        ObjectTracking cap(tracker, parser.get<int>("window"), TypeCapture::DISPLAY_CAP);
         cap.run();
         return EXIT_SUCCESS;
     }
