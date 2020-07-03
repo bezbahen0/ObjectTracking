@@ -1,2 +1,0 @@
-update readme.md
-create my implementation tracker objects
