@@ -1,5 +1,5 @@
 #include "include/ObjectTracking.hpp"
-//#include "include/TrackerMyImpl.hpp"
+#include "include/TrackerMyImpl.hpp"
 
 inline cv::Ptr<cv::Tracker> cvtrackers(cv::String& name)
 {
@@ -22,8 +22,8 @@ inline cv::Ptr<cv::Tracker> cvtrackers(cv::String& name)
     //this tracker use caffemodel, for mor information on gouturn tracker https://www.learnopencv.com/goturn-deep-learning-based-object-tracking/
     else if (name == "goturn")
         tracker = cv::TrackerGOTURN::create();
-    // else if (name == "myimpl")
-    //    tracker = TrackerMyImpl::create();
+    else if (name == "myimpl")
+        tracker = TrackerMyImpl::create();
     else
         CV_Error(cv::Error::StsBadArg, "invalid tracking algorithm name\n");
 
@@ -42,6 +42,8 @@ ObjectTracking::ObjectTracking(cv::String& trackerName, int index, int typeCap)
     {
         cap_.open(index);
     }
+    cap_.set(cv::CAP_PROP_FRAME_WIDTH, 1024);
+    cap_.set(cv::CAP_PROP_FRAME_HEIGHT, 768);
 }
 
 ObjectTracking::ObjectTracking(cv::String& trackerName, int index, char* addressDisplay)
@@ -49,6 +51,8 @@ ObjectTracking::ObjectTracking(cv::String& trackerName, int index, char* address
     trackerName_ = trackerName;
     tracker_ = ::cvtrackers(trackerName);
     cap_.opendisplay(index, addressDisplay);
+    cap_.set(cv::CAP_PROP_FRAME_WIDTH, 1024);
+    cap_.set(cv::CAP_PROP_FRAME_HEIGHT, 768);
 }
 
 ObjectTracking::ObjectTracking(cv::String& trackerName, cv::String filename)
@@ -56,7 +60,8 @@ ObjectTracking::ObjectTracking(cv::String& trackerName, cv::String filename)
     trackerName_ = trackerName;
     tracker_ = ::cvtrackers(trackerName);
     cap_.open(filename);
-
+    cap_.set(cv::CAP_PROP_FRAME_WIDTH, 1024);
+    cap_.set(cv::CAP_PROP_FRAME_HEIGHT, 768);
 }
 
 void ObjectTracking::run()
@@ -81,7 +86,7 @@ void ObjectTracking::run()
             bool messag;
             if(tracker_ -> update(frame, roi))
             {
-                cv::rectangle(frame, roi, cv::Scalar( 255, 0, 0 ), 2, 1);
+                cv::rectangle(frame, roi, cv::Scalar(0, 255, 0), 2, 1);
                 messag = false;
             }
             else if(!messag)
