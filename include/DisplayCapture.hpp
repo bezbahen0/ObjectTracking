@@ -28,12 +28,12 @@ class DisplayCapture : public cv::IVideoCapture
 public:
     
     DisplayCapture(int windowNumber);
-    DisplayCapture(int windowNumber, char* address);
     virtual ~DisplayCapture();
     
     virtual bool grabFrame() CV_OVERRIDE;
     virtual bool retrieveFrame(int, cv::OutputArray dst) CV_OVERRIDE;
     virtual bool isOpened() const CV_OVERRIDE;
+    virtual bool setProperty(int propid, double value) CV_OVERRIDE;
 
 private:
     void getWindowList();
@@ -44,6 +44,8 @@ private:
     int windowNumber_;
     Window* listWindows_;
     unsigned long lenlist_;
+
+    cv::Size sizewin_;
 
     int width_; 
     int height_;

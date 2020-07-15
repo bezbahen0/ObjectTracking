@@ -34,7 +34,7 @@ bool TrackerMyImpl::initImpl(const cv::Mat& image, const cv::Rect2d& boundingBox
     cv::getRectSubPix(img, size_, center_, window);
     cv::createHanningWindow(hanningWin_, size_, CV_32F);
 
-    cv::Mat g = cv::Mat::zeros(size_,CV_32F);
+    cv::Mat g = cv::Mat::zeros(size_, CV_32F);
     g.at<float>(h/2, w/2) = 1;
     cv::GaussianBlur(g, g, cv::Size(-1,-1), 2.0);
 
@@ -77,7 +77,7 @@ bool TrackerMyImpl::updateImpl( const cv::Mat& image, cv::Rect2d& boundingBox )
 
     cv::Point delta;
     double psr = correlate(imagesub, delta);
-    if (psr < psrthreshold)
+    if (psr < ::psrthreshold)
         return false;
 
     center_.x += delta.x;
@@ -93,9 +93,17 @@ bool TrackerMyImpl::updateImpl( const cv::Mat& image, cv::Rect2d& boundingBox )
     cv::dft(img_sub_new, F, cv::DFT_COMPLEX_OUTPUT);
     cv::mulSpectrums(G_, F, A_new, 0, true );
     cv::mulSpectrums(F, F, B_new, 0, true );
-
-    A_ = A_ * (1 - rate) + A_new * rate;
-    B_ = B_ * (1 - rate) + B_new * rate;
+    
+    if(rate >= 1.0)
+    {
+        A_ = A_new;
+        B_ = B_new;
+    }
+    else 
+    {
+        A_ = A_ * (1 - ::rate) + A_new * ::rate;
+        B_ = B_ * (1 - ::rate) + B_new * ::rate;
+    }
     H_ = divDFTs(A_, B_);
 
     double x = center_.x;
@@ -140,7 +148,7 @@ void TrackerMyImpl::preProcess(cv::Mat& window)
     cv::Scalar mean;
     cv::Scalar stddev;
     cv::meanStdDev(window, mean, stddev);
-    window = (window - mean[0]) / (stddev[0] + eps);
+    window = (window - mean[0]) / (stddev[0] + ::eps);
 
     window = window.mul(hanningWin_);
 }
@@ -163,7 +171,7 @@ double TrackerMyImpl::correlate(const cv::Mat& image, cv::Point& delta)
 
     cv::Scalar mean, std;
     cv::meanStdDev(response, mean, std);
-    return (maxval - mean[0]) / (std[0] + eps);
+    return (maxval - mean[0]) / (std[0] + ::eps);
 }
 
 cv::Mat TrackerMyImpl::randWarp(const cv::Mat& a) 

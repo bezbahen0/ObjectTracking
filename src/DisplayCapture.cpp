@@ -20,22 +20,6 @@ DisplayCapture::DisplayCapture(int windowNumber)
     window_ = listWindows_[windowNumber]; 
 }
 
-DisplayCapture::DisplayCapture(int windowNumber, char* address)
-{
-    windowNumber_ = windowNumber_;
-    display_ = XOpenDisplay(address);
-    root_ = RootWindow(display_, DefaultScreen(display_));
-
-    getWindowList();
-
-    if(windowNumber > lenlist_)
-    {
-        throw std::runtime_error("wrong index window");
-    }
-
-    window_ = listWindows_[windowNumber];
-}
-
 DisplayCapture::~DisplayCapture()
 {
     XCloseDisplay(display_); 
@@ -70,7 +54,7 @@ bool DisplayCapture::retrieveFrame(int, cv::OutputArray dst)
 
         cv::Mat mat = cv::Mat(height_, width_, BitsPerPixel_ > 24 ? CV_8UC4 : CV_8UC3, &pixels_[0]);
         cv::cvtColor(mat, mat, cv::COLOR_BGRA2BGR);
-        mat.copyTo(dst);
+        cv::resize(mat, dst, sizewin_);
 
         XDestroyImage(img);
 
@@ -83,6 +67,26 @@ bool DisplayCapture::isOpened() const
 {
     return display_ != NULL ? true : false;
 }
+
+bool DisplayCapture::setProperty(int propid, double value)
+{
+    switch(propid)
+    {
+        case cv::CAP_PROP_FRAME_WIDTH:
+        {
+            sizewin_.width = int(value);
+            return true;
+        }
+        case cv::CAP_PROP_FRAME_HEIGHT:
+        {
+            sizewin_.height = int(value);
+            return true;
+        }
+    }
+    return false;
+}
+
+
 
 void DisplayCapture::getWindowList()
 {

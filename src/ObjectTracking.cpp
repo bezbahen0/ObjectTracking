@@ -34,6 +34,7 @@ ObjectTracking::ObjectTracking(cv::String& trackerName, int index, int typeCap)
 {
     trackerName_ = trackerName;
     tracker_ = ::cvtrackers(trackerName);
+
     if(typeCap == TypeCapture::DISPLAY_CAP)
     {
         cap_.opendisplay(index);
@@ -42,26 +43,24 @@ ObjectTracking::ObjectTracking(cv::String& trackerName, int index, int typeCap)
     {
         cap_.open(index);
     }
-    cap_.set(cv::CAP_PROP_FRAME_WIDTH, 1024);
-    cap_.set(cv::CAP_PROP_FRAME_HEIGHT, 768);
-}
 
-ObjectTracking::ObjectTracking(cv::String& trackerName, int index, char* addressDisplay)
-{
-    trackerName_ = trackerName;
-    tracker_ = ::cvtrackers(trackerName);
-    cap_.opendisplay(index, addressDisplay);
     cap_.set(cv::CAP_PROP_FRAME_WIDTH, 1024);
     cap_.set(cv::CAP_PROP_FRAME_HEIGHT, 768);
+    cap_.set(cv::CAP_PROP_POS_FRAMES, 0);
+    cap_.set(cv::CAP_PROP_POS_MSEC, 0);
 }
 
 ObjectTracking::ObjectTracking(cv::String& trackerName, cv::String filename)
 {
     trackerName_ = trackerName;
     tracker_ = ::cvtrackers(trackerName);
+
     cap_.open(filename);
+
     cap_.set(cv::CAP_PROP_FRAME_WIDTH, 1024);
     cap_.set(cv::CAP_PROP_FRAME_HEIGHT, 768);
+    cap_.set(cv::CAP_PROP_POS_FRAMES, 0);
+    cap_.set(cv::CAP_PROP_POS_MSEC, 0);
 }
 
 void ObjectTracking::run()
@@ -77,9 +76,7 @@ void ObjectTracking::run()
         cap_ >> frame;
 
         if(frame.empty())
-        {
             break;
-        }
 
         if(init)
         {
@@ -123,8 +120,6 @@ void ObjectTracking::run()
             tracker_ = cvtrackers(trackerName_);
         }
         if(c == 'q')
-        {
             break;
-        }
     }
 }

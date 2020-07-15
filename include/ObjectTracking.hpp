@@ -19,7 +19,6 @@ class ObjectTracking
 {
 public:
     ObjectTracking(cv::String& trackerName, int index, int typeCap);
-    ObjectTracking(cv::String& trackerName, int index, char* addressDisplay);
     ObjectTracking(cv::String& trackerName, cv::String filename);
     
     void run();
