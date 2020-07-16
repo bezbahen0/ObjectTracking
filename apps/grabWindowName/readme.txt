@@ -1,14 +1,7 @@
 this programm usefull for get name window 
 
-#Compilation
-```
+Compilation
 $ mkdir build
-```
-```
 $ cd build 
-```
-```
 $ cmake ..
-```
 $ make
-```
