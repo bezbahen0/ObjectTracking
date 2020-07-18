@@ -143,14 +143,16 @@ void TrackerMOSSEmod::updateFilter(const cv::Mat& image, const cv::Rect2d& bbox,
 
 cv::Rect2d TrackerMOSSEmod::getSmalBigRect(const cv::Rect2d& rect, const int param)
 {
-    int w = rect.width;
-    int h = rect.height;
-    int x = rect.x;
-    int y = rect.y;
+    int w = int(rect.width);
+    int h = int(rect.height);
+    int x = int(std::floor((2 * rect.x + rect.width - w) / 2));
+    int y = int(std::floor((2 * rect.y + rect.height - h) / 2));
+    cv::Point center(x + w/2, y + h/2);
+
     if(param == 0)
-        return cv::Rect2d(cv::Point2d(x - 0.5 * w * (1/k), y - 0.5 * h * (1/k)), cv::Point2d(x + 0.5 * w * (1/k), y + 0.5 * h * (1/k)));
+        return cv::Rect2d(cv::Point2d(center.x - (w/k * 0.5), center.y - (h/k * 0.5)), cv::Point2d(center.x + (w/k*0.5), center.y + (h/k * 0.5)));
     else
-        return cv::Rect2d(cv::Point2d(x - 0.5 * w * k, y - 0.5 * h * k), cv::Point2d(x + 0.5 * w * k, y + 0.5 * h * k));
+        return cv::Rect2d(cv::Point2d(center.x - (w/k), center.y - h/k), cv::Point2d(center.x + w/k, center.y + h/k));
         
 }
 

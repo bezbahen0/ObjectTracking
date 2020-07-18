@@ -44,8 +44,8 @@ ObjectTracking::ObjectTracking(cv::String& trackerName, int index, int typeCap)
         cap_.open(index);
     }
 
-    cap_.set(cv::CAP_PROP_FRAME_WIDTH, 1024);
-    cap_.set(cv::CAP_PROP_FRAME_HEIGHT, 768);
+    cap_.set(cv::CAP_PROP_FRAME_WIDTH, 960);
+    cap_.set(cv::CAP_PROP_FRAME_HEIGHT, 540);
     cap_.set(cv::CAP_PROP_POS_FRAMES, 0);
     cap_.set(cv::CAP_PROP_POS_MSEC, 0);
 }
@@ -57,8 +57,8 @@ ObjectTracking::ObjectTracking(cv::String& trackerName, cv::String filename)
 
     cap_.open(filename);
 
-    cap_.set(cv::CAP_PROP_FRAME_WIDTH, 1024);
-    cap_.set(cv::CAP_PROP_FRAME_HEIGHT, 768);
+    cap_.set(cv::CAP_PROP_FRAME_WIDTH, 960);
+    cap_.set(cv::CAP_PROP_FRAME_HEIGHT, 540);
     cap_.set(cv::CAP_PROP_POS_FRAMES, 0);
     cap_.set(cv::CAP_PROP_POS_MSEC, 0);
 }
