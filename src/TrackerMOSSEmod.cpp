@@ -155,7 +155,7 @@ cv::Rect2d TrackerMOSSEmod::getSmalBigRect(const cv::Rect2d& rect, const int par
         return cv::Rect2d(cv::Point2d(center.x - (w/k), center.y - h/k), cv::Point2d(center.x + w/k, center.y + h/k));
         
 }
-
+//this need change
 void TrackerMOSSEmod::getFilterWithMaxPsr()
 {
     int index = 0;
