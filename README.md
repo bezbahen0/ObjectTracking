@@ -46,4 +46,8 @@ Default, application using the kcf tracker algorithm if you want to change algor
 ./ObjectTracking -c=<index camera> --tracker=<tracker name>
 ./ObjectTracking -c=0 --tracker=csrt
 ```
+## Links
+https://habr.com/ru/post/421285
+https://github.com/gnebehay/CppMT
+https://github.com/opencv/opencv_contrib/tree/master/modules/tracking
 
