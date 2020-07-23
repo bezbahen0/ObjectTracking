@@ -1,5 +1,5 @@
 #include "include/ObjectTracking.hpp"
-#include "include/TrackerMOSSEmod.hpp"
+#include "include/tracker.hpp"
 
 inline cv::Ptr<cv::Tracker> cvtrackers(cv::String& name)
 {

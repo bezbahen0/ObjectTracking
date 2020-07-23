@@ -9,8 +9,8 @@ add_compile_options(
     # -Wall
 )
 
-file(GLOB HEADERS "include/*.hpp")
-file(GLOB SOURCES  "src/*.cpp")
+file(GLOB HEADERS "include/*.hpp" "include/tracker/*.hpp")
+file(GLOB SOURCES  "src/*.cpp" "src/tracker/*.cpp")
 
 if(OpenCV_FOUND)
     include_directories( ${OpenCV_INCLUDE_DIRS} )
