@@ -1,7 +1,7 @@
 #ifndef TRACKERMOSSEMOD_HPP
 #define TRACKERMOSSEMOD_HPP
 
- #include<opencv2/tracking.hpp>
+#include<opencv2/tracking.hpp>
 
 struct Filter
 {
