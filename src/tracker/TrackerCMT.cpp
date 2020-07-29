@@ -151,11 +151,6 @@ bool TrackerCMT::updateImpl(const cv::Mat& image, cv::Rect2d& boundingBox)
     bb_ = cv::RotatedRect(center, initSize_ * scale, rotation/CV_PI * 180);
     boundingBox = bb_.boundingRect();
 
-    for(size_t i = 0; i < this->pointsActive_.size(); i++)
-    {
-        cv::circle(image, this -> pointsActive_[i], 2, cv::Scalar(255,0,0));
-    }
-
     imagePrev_ = img.clone();
 
     return true;
