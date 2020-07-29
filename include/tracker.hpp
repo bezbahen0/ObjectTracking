@@ -1,6 +1,7 @@
-#ifndef TRACKER_HPP
-#define TRACKER_HPP
+#ifndef TRACKERI_HPP
+#define TRACKERI_HPP
 
 #include "include/tracker/TrackerMOSSEmod.hpp"
+#include "include/tracker/TrackerCMT.hpp"
 
-#endif /* TRACKER_HPP */
+#endif /* TRACKERI_HPP */

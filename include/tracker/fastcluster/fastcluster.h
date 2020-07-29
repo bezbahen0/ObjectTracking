@@ -5,7 +5,7 @@
 #include <string> // for std::string
 #include <math.h> // for std::string
 
-#include "../common.h"
+#include "include/tracker/common.hpp"
 
 #define fc_isnan(X) ((X)!=(X))
 

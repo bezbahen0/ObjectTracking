@@ -1,7 +1,7 @@
 #ifndef MATCHER_HPP
 #define MATCHER_HPP
 
-#include "common.h"
+#include "common.hpp"
 
 #include <opencv2/features2d/features2d.hpp>
 
@@ -30,6 +30,6 @@ private:
     float thr_dist;
     float thr_ratio;
     float thr_cutoff;
-}
+};
 
 #endif /* MATCHER_HPP */

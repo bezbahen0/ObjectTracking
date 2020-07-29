@@ -20,7 +20,7 @@ void Matcher::initialize(const std::vector<cv::Point2f>& pts_fg_norm, const cv::
     classes = classes_bg;
     classes.insert(classes.end(), classes_fg.begin(), classes_fg.end());
 
-    bfmatcher = DescriptorMatcher::create("BruteForce-Hamming");
+    bfmatcher = cv::DescriptorMatcher::create("BruteForce-Hamming");
 }
 
 void Matcher::matchGlobal(const std::vector<cv::KeyPoint> & keypoints, const cv::Mat descriptors,
@@ -60,7 +60,7 @@ void Matcher::matchLocal(const std::vector<cv::KeyPoint>& keypoints, const cv::M
     pts_fg_trans.reserve(pts_fg_norm.size());
     for(size_t i = 0; i < pts_fg_norm.size(); ++i)
     {
-        pts_fg_trans.push_back(scale * rotate(pts_fg_norm[i], -rotation));
+        pts_fg_trans.push_back(scale * utils::rotate(pts_fg_norm[i], -rotation));
     }
 
     for(size_t i = 0; i < keypoints.size(); ++i)

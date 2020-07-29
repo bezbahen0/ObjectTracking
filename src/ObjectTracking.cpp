@@ -24,6 +24,8 @@ inline cv::Ptr<cv::Tracker> cvtrackers(cv::String& name)
         tracker = cv::TrackerGOTURN::create();
     else if (name == "mossemod")
         tracker = TrackerMOSSEmod::create();
+    else if (name == "cmt")
+        tracker = TrackerCMT::create();
     else
         CV_Error(cv::Error::StsBadArg, "invalid tracking algorithm name\n");
 

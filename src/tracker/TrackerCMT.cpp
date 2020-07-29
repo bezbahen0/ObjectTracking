@@ -1,9 +1,16 @@
 #include "include/tracker/TrackerCMT.hpp"
 
 #include <opencv2/imgproc/imgproc.hpp>
+struct DummyModel : cv::TrackerModel
+{
+    virtual void modelUpdateImpl() CV_OVERRIDE {}
+    virtual void modelEstimationImpl(const std::vector<cv::Mat>&) CV_OVERRIDE {}
+};
 
 bool TrackerCMT::initImpl(const cv::Mat& image, const cv::Rect2d& boundingBox)
 {
+    model = cv::makePtr<DummyModel>();
+
     cv::Mat img;
     if(img.channels() == 1)
         img = image;
@@ -12,11 +19,16 @@ bool TrackerCMT::initImpl(const cv::Mat& image, const cv::Rect2d& boundingBox)
     
     initSize_ = boundingBox.size();
     imagePrev_ = img.clone();
-    cv::Point2f center = cv::Point2f(boundingBox.x + boundingBox.weight/2.0, boundingBox.y + boundingBox.height/2.0);
-    bb_ = cv::RotatedRect(center, initSize_, 0.0); 
+    cv::Point2f center = cv::Point2f(boundingBox.x + boundingBox.width/2.0, boundingBox.y + boundingBox.height/2.0);
+    bb_ = cv::Rect(center, initSize_); 
 
+#if CV_MAJOR_VERSION > 2
+    detector_ = cv::FastFeatureDetector::create();
+    descriptor_ = cv::BRISK::create();
+#else
     detector_ = cv::FeatureDetector::create(detectorName_);
     descriptor_ = cv::DescriptorExtractor::create(descriptorName_);
+#endif
 
     std::vector<cv::KeyPoint> keypoints;
     detector_ -> detect(img, keypoints);
@@ -70,17 +82,75 @@ bool TrackerCMT::initImpl(const cv::Mat& image, const cv::Rect2d& boundingBox)
     
     matcher_.initialize(pointsNormalized, descs_fg, classes_fg, descs_bg, center);
 
-    consensus_.Initialize(pointsNormalized);
+    consensus_.initialize(pointsNormalized);
 
     for(size_t i = 0; i < keypoints_fg.size(); ++i)
     {
         pointsActive_.push_back(keypoints_fg[i].pt);
         activeClasses_ = classes_fg;
     }
+
+    return true;
 }
 
-bool TrackerCMT::updateImpl(const cv::Mat& image, const, cv::Rect2d& boundingBox)
+bool TrackerCMT::updateImpl(const cv::Mat& image, cv::Rect2d& boundingBox)
 {
+    cv::Mat img;
+    if(img.channels() == 1)
+        img = image;
+    else
+        cv::cvtColor(image, img, cv::COLOR_BGR2GRAY);
+    
 
+    std::vector<cv::Point2f> points_tracked;
+    std::vector<unsigned char> status;
+    tracker_.track(imagePrev_, img, pointsActive_, points_tracked, status);
+
+    std::vector<int> classes_tracked;
+    for (size_t i = 0; i < activeClasses_.size(); i++)
+    {
+        if (status[i])
+        {
+            classes_tracked.push_back(activeClasses_[i]);
+        }
+
+    }
+
+    std::vector<cv::KeyPoint> keypoints;
+    detector_ -> detect(img, keypoints);
+
+    cv::Mat descriptors;
+    descriptor_ -> compute(img, keypoints, descriptors);
+
+    std::vector<cv::Point2f> points_matched_global;
+    std::vector<int> classes_matched_global;
+    matcher_.matchGlobal(keypoints, descriptors, points_matched_global, classes_matched_global);
+
+    std::vector<cv::Point2f> points_fused;
+    std::vector<int> classes_fused;
+    utils::preferFirst(points_tracked, classes_tracked, points_matched_global, classes_matched_global, points_fused, classes_fused);
+
+    float scale;
+    float rotation;
+    consensus_.estimateScaleRotation(points_fused, classes_fused, scale, rotation);
+
+    cv::Point2f center;
+    std::vector<cv::Point2f> points_inlier;
+    std::vector<int> classes_inlier;
+    consensus_.findConsensus(points_fused, classes_fused, scale, rotation, center, points_inlier, classes_inlier);
+
+    std::vector<cv::Point2f> points_matched_local;
+    std::vector<int> classes_matched_local;
+    matcher_.matchLocal(keypoints, descriptors, center, scale, rotation, points_matched_local, classes_matched_local);
+
+    pointsActive_.clear();
+    activeClasses_.clear();
+
+    utils::preferFirst(points_matched_local, classes_matched_local, points_inlier, classes_inlier, pointsActive_, activeClasses_);
+
+    boundingBox = cv::Rect2d(center,  initSize_ * scale);
+
+    imagePrev_ = img;
+    return true;
 }
 

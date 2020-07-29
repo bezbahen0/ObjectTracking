@@ -9,8 +9,8 @@ add_compile_options(
     # -Wall
 )
 
-file(GLOB HEADERS "include/*.hpp" "include/tracker/*.hpp" "include/tracker/fustcluster/fustcluster.h")
-file(GLOB SOURCES  "src/*.cpp" "src/tracker/*.cpp" "src/tracker/fustcluster/fustcluster.cpp"))
+file(GLOB HEADERS "include/*.hpp" "include/tracker/fastcluster/fastcluster.h" "include/tracker/*.hpp")
+file(GLOB SOURCES  "src/*.cpp" "src/tracker/fastcluster/fastcluster.cpp"  "src/tracker/*.cpp")
 
 if(OpenCV_FOUND)
     include_directories( ${OpenCV_INCLUDE_DIRS} )

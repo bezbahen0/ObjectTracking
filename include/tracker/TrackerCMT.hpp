@@ -1,18 +1,18 @@
 #ifndef TRACKERCMT_HPP
 #define TRACKERCMT_HPP
 
-#include<opencv2/tracking.hpp>
+#include <opencv2/tracking.hpp>
 #include <opencv2/features2d/features2d.hpp>
 
-#include "common.hpp"
-#include "Tracker.hpp"
-#include "Consensus.hpp"
-#include "Matcher.hpp"
+#include "include/tracker/common.hpp"
+#include "include/tracker/Tracker.hpp"
+#include "include/tracker/Consensus.hpp"
+#include "include/tracker/Matcher.hpp"
 
 class TrackerCMT : public cv::Tracker 
 {
 public:
-    virtual ~TrackerCMT(); 
+    virtual ~TrackerCMT() {}; 
     TrackerCMT(): detectorName_("FAST"), descriptorName_("BRISK")
     {isInit = 0;}
 
@@ -21,17 +21,16 @@ public:
 
     static cv::Ptr<TrackerCMT> create()
     {
-        cv::makePtr<TrackerCMT>();
+        return cv::makePtr<TrackerCMT>();
     }
     cv::Rect bb_;
-
 protected:
     virtual bool initImpl(const cv::Mat& image, const cv::Rect2d& boundingBox) CV_OVERRIDE;
-    virtual bool updateImpl(const cv::Mat& image, const cv::Rect2d& boundingBox) CV_OVERRIDE;
+    virtual bool updateImpl(const cv::Mat& image, cv::Rect2d& boundingBox) CV_OVERRIDE;
 
 private:
     Matcher matcher_;
-    Tracker tracker_;
+    _Tracker tracker_;
     Consensus consensus_;
 
     std::string detectorName_;

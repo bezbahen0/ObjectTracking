@@ -1,7 +1,7 @@
 #ifndef CONSENSUS_HPP
 #define CONSENSUS_HPP
 
-#include "common.h"
+#include "include/tracker/common.hpp"
 
 
 class Consensus
@@ -21,9 +21,9 @@ public:
 
 private:
     float thr_cutoff;
-    vector<Point2f> points_normalized;
-    Mat distances_pairwise;
-    Mat angles_pairwise;
+    std::vector<cv::Point2f> points_normalized;
+    cv::Mat distances_pairwise;
+    cv::Mat angles_pairwise;
 };
 
 #endif /* CONSENSUS_HPP */

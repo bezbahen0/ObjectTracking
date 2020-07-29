@@ -72,10 +72,10 @@ void Consensus::estimateScaleRotation(const std::vector<cv::Point2f>& points, co
     }
 
     if(changes_scale.size() < 2) scale = 1;
-    else scale = median(changes_scale);
+    else scale = utils::median(changes_scale);
 
     if(changes_angles.size() < 2) rotation = 0;
-    else rotation = median(changes_angles);
+    else rotation = utils::median(changes_angles);
 }
 
 void Consensus::findConsensus(const std::vector<cv::Point2f>& points, const std::vector<int>& classes,
@@ -93,7 +93,7 @@ void Consensus::findConsensus(const std::vector<cv::Point2f>& points, const std:
     std::vector<cv::Point2f> votes(points.size());
     for(size_t i = 0; i < points.size(); i++)
     {
-        votes[i] = points[i] - scale * cv::rotate(points_normalized[classes[i]], rotation);
+        votes[i] = points[i] - scale * utils::rotate(points_normalized[classes[i]], rotation);
     }
 
     t_index N = points.size();
