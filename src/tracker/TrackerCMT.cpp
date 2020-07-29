@@ -20,7 +20,7 @@ bool TrackerCMT::initImpl(const cv::Mat& image, const cv::Rect2d& boundingBox)
     initSize_ = boundingBox.size();
     imagePrev_ = img.clone();
     cv::Point2f center = cv::Point2f(boundingBox.x + boundingBox.width/2.0, boundingBox.y + boundingBox.height/2.0);
-    bb_ = cv::Rect(center, initSize_); 
+    bb_ = cv::RotatedRect(center, initSize_, 0.0);
 
 #if CV_MAJOR_VERSION > 2
     detector_ = cv::FastFeatureDetector::create();
@@ -148,9 +148,16 @@ bool TrackerCMT::updateImpl(const cv::Mat& image, cv::Rect2d& boundingBox)
 
     utils::preferFirst(points_matched_local, classes_matched_local, points_inlier, classes_inlier, pointsActive_, activeClasses_);
 
-    boundingBox = cv::Rect2d(center,  initSize_ * scale);
+    bb_ = cv::RotatedRect(center, initSize_ * scale, rotation/CV_PI * 180);
+    boundingBox = bb_.boundingRect();
 
-    imagePrev_ = img;
+    for(size_t i = 0; i < this->pointsActive_.size(); i++)
+    {
+        cv::circle(image, this -> pointsActive_[i], 2, cv::Scalar(255,0,0));
+    }
+
+    imagePrev_ = img.clone();
+
     return true;
 }
 
