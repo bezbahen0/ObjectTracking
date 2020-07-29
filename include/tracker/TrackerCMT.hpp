@@ -2,6 +2,12 @@
 #define TRACKERCMT_HPP
 
 #include<opencv2/tracking.hpp>
+#include <opencv2/features2d/features2d.hpp>
+
+#include "common.hpp"
+#include "Tracker.hpp"
+#include "Consensus.hpp"
+#include "Matcher.hpp"
 
 class TrackerCMT : public cv::Tracker 
 {
@@ -17,15 +23,30 @@ public:
     {
         cv::makePtr<TrackerCMT>();
     }
+    cv::Rect bb_;
+
 protected:
     virtual bool initImpl(const cv::Mat& image, const cv::Rect2d& boundingBox) CV_OVERRIDE;
     virtual bool updateImpl(const cv::Mat& image, const cv::Rect2d& boundingBox) CV_OVERRIDE;
+
 private:
+    Matcher matcher_;
+    Tracker tracker_;
+    Consensus consensus_;
+
     std::string detectorName_;
     std::string descriptorName_;
 
-    cv::Mat imagePrev_;
+    cv::Ptr<cv::FeatureDetector> detector_;
+    cv::Ptr<cv::DescriptorExtractor> descriptor_;
 
+    cv::Size2f  initSize_;
+    std::vector<int> activeClasses_;
+    std::vector<cv::Point2f> pointsActive_; 
+
+    float theta_;
+
+    cv::Mat imagePrev_;
 };
 
 #endif /* TRACKERCMT_HPP */
