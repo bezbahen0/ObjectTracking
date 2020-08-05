@@ -36,7 +36,7 @@
 */
 
 
-#include "include/tracker/fastcluster/fastcluster.h"
+#include "fastcluster.h"
 
 class doubly_linked_list {
   /*
