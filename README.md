@@ -1,7 +1,7 @@
 # Objects Tracking Using OpenCV
 
 ## Working Example
-
+![Working example](demo/example.gif)
 ## Project Description 
 
 ## Requirements
